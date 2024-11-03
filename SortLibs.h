@@ -44,4 +44,5 @@ namespace SortLibs
   void QuickSort(std::vector<int>& vec, int low, int high);
 
 #pragma endregion
+
 }

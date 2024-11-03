@@ -156,41 +156,43 @@ void SortLibs::MergeSort(std::vector<int> &vec, int left, int right)
   }
 }
 
-int SortLibs::Partition(std::vector<int> &vec, int low, int high)
+int SortLibs::Partition(std::vector<int> &vec, int left, int right)
 {
-  // cache the low and high index
-  int lowIdx = low;
-  int highIdx = high;
+  // Select a random pivot and swap it with the first element
+  int random_pivot = left + rand() % (right - left + 1);
+  std::swap(vec[left], vec[random_pivot]);
 
-  // middle element as pivot, it can be the first element, the last element, or the middle element
-  int pivot = vec[(low + high) / 2];
+  int pivot = vec[left]; // Choose the pivot element
+  
+  int low = left + 1;    // Start right after the pivot
+  int high = right;
 
-  while (lowIdx < highIdx)
+  while (low <= high)
   {
-    // find the element on the left side that is greater than the pivot
-    while (vec[lowIdx] <= pivot)
+    // Find elements larger than the pivot
+    while (low <= right && vec[low] <= pivot)
     {
-      ++lowIdx;
+      ++low;
     }
 
-    // find the element on the right side that is less than the pivot
-    while (vec[highIdx] > pivot)
+    // Find elements smaller than the pivot
+    while (high >= left && vec[high] > pivot)
     {
-      --highIdx;
+      --high;
     }
 
-    // if the low index is less than the high index, swap the elements
-    if (lowIdx < highIdx)
+    // Swap elements if low and high haven't crossed
+    if (low < high)
     {
-      std::swap(vec[lowIdx], vec[highIdx]);
+      std::swap(vec[low], vec[high]);
     }
   }
 
-  // update the pivot index by swapping the pivot element with the high index element
-  std::swap(vec[lowIdx], vec[highIdx - 1]);
+  // Place the pivot in the correct position (swap with high)
+  std::swap(vec[left], vec[high]);
 
-  // return the high index
-  return highIdx;
+  // Return the position of the pivot
+  return high;
 }
 
 void SortLibs::QuickSort(std::vector<int> &vec, int low, int high)
